@@ -6,7 +6,7 @@ import pandas as pd
 #setting up cache so we don't spam the F1 servers..
 fastf1.Cache.enable_cache('cache')
 #we'll use fastf1 plotting style to add nice fonts and colors
-fastf1.plotting.setup_mpl(misc_mpl_mods=False)
+fastf1.plotting.setup_mpl()
 
 def loadSession(year, grandPrix, sessionType = 'Q'):
     """
@@ -32,7 +32,7 @@ def getFastestLap(session, driverCode):
     print(f"Extracting fastest lap for {driverCode}...")
     try:
         #first we fetch the driver's laps
-        laps = session.laps.pick_driver(driverCode)
+        laps = session.laps.pick_drivers(driverCode)
         #safeguard, we check if the driver exists in the session
         if len(laps) == 0:
             print(f"Driver '{driverCode}' didn't participate.")
