@@ -1,0 +1,14 @@
+#python junk
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.env
+
+#FastF1 Cache (important!)
+cache/
+f1_cache/
+
+#IDE settings
+.vscode/
+.idea/
