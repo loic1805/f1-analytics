@@ -8,8 +8,8 @@ def computeDeltaTime(driver1Tel, driver2Tel):
     
     Positive delta means Driver 1 is faster (Driver 2 took more time to reach the same point).
     Negative delta means Driver 2 is faster.
-    :param driver1Tel: Driver 1's telemetry data
-    :param driver2Tel: Driver 2's telemetry data
+    :param driver1Tel (dataframe): Driver 1's telemetry data
+    :param driver2Tel (dataframe): Driver 2's telemetry data
     """
     #let's create a common distance axis (0 to the end of the lap)
     #then we take the shorter total distance to avoid extrapolation errors
