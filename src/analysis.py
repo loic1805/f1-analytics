@@ -3,10 +3,11 @@ import numpy as np
 
 def computeDeltaTime(driver1Tel, driver2Tel):
     """
-    Computes the time difference between two drivers over the course of a lap
-    Returns a dataframe with 'Distance' and 'Delta'
+    Computes the time difference between two drivers over the course of a lap.
+    Returns a dataframe with 'Distance' and 'Delta'.
     
-    Positive delta means Driver 1 is ahead. If Negative, he's behind
+    Positive delta means Driver 1 is faster (Driver 2 took more time to reach the same point).
+    Negative delta means Driver 2 is faster.
     :param driver1Tel: Driver 1's telemetry data
     :param driver2Tel: Driver 2's telemetry data
     """
