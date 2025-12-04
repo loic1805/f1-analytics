@@ -9,7 +9,10 @@ fastf1.plotting.setup_mpl()
 
 def plotAnalysis(session, driver1Tel, driver1Code, driver2Tel, driver2Code, deltaData):
     """
-    Plots a comparison of speed traces for two drivers
+    Plots a dual analysis for two drivers: (1) a comparison of their speed traces, and (2) a delta time (gap) analysis.
+    
+    The first subplot compares the speed traces of both drivers over distance.
+    The second subplot shows the delta time (gap) between the two drivers as a function of distance.
     
     :param session (object): the fastF1 session object
     :param driver1Tel (dataframe): driver 1's telemetry data
