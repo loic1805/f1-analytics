@@ -15,7 +15,7 @@ def computeDeltaTime(driver1Tel, driver2Tel):
     #then we take the shorter total distance to avoid extrapolation errors
     maxDist = min(driver1Tel['Distance'].max(), driver2Tel['Distance'].max())
     #then we create distinct points every 1 meter
-    sectionDist = np.linspace(0, maxDist, num=int(maxDist))
+    sectionDist = np.linspace(0, maxDist, num=max(2, int(maxDist)))
 
     #in order for this to work correctly, we need to convert Time to seconds
     #also we need strictly increasing time
