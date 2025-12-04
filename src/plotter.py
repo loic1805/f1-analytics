@@ -1,6 +1,8 @@
 import matplotlib.pyplot as plt
 import fastf1.plotting
-import seaborn as sns
+
+#dark mode
+plt.style.use('dark_background')
 
 #let's apply the basic f1 styling
 fastf1.plotting.setup_mpl()
@@ -22,7 +24,7 @@ def plotAnalysis(session, driver1Tel, driver1Code, driver2Tel, driver2Code, delt
     fig, ax = plt.subplots(2, 1, figsize=(12, 8), gridspec_kw={'height_ratios': [3, 1]}, sharex=True)
 
     #PLOT 1 : Speed trace
-    ax[0].set_title(f"{eventName}: Speed Comparision", fontsize=16)
+    ax[0].set_title(f"{eventName}: Speed Comparision", fontsize=16, color='white')
     #let's plot each driver
     #driver 1
     color1 = fastf1.plotting.get_driver_color(driver1Code, session=session)
@@ -38,9 +40,9 @@ def plotAnalysis(session, driver1Tel, driver1Code, driver2Tel, driver2Code, delt
     ax[0].grid(color="gray", linestyle=":", linewidth=0.5, alpha=0.5)
 
     #PLOT 2 : Time comparison
-    ax[1].plot(deltaData['Distance'], deltaData['Delta'], color='tab:cyan', linewidth=1)
+    ax[1].plot(deltaData['Distance'], deltaData['Delta'], color='white', linewidth=1)
     #we'll add an horizontal line at 0 exactly
-    ax[1].axhline(0, color='black', linestyle='--', linewidth=1)
+    ax[1].axhline(0, color='gray', linestyle='--', linewidth=1)
 
     #and finally the grid and the labels
     ax[1].set_ylabel(f"Gap (s)\n({driver1Code} Ahead)", fontsize=10)

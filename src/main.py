@@ -5,11 +5,11 @@ from analysis import computeDeltaTime
 
 def main():
     #setup
-    year = 2024
-    gp = "Japan"
+    year = 2021
+    gp = "Abu Dhabi"
     sessionType = 'Q'
-    driver1 = 'PIA'
-    driver2 = 'VER'
+    driver1 = 'HAM'
+    driver2 = 'NOR'
     if driver1 == driver2:
         print('Please select two different drivers')
         return
