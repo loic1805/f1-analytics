@@ -8,8 +8,11 @@ def main():
     year = 2024
     gp = "Japan"
     sessionType = 'Q'
-    driver1 = 'VER'
-    driver2 = 'PIA'
+    driver1 = 'PIA'
+    driver2 = 'VER'
+    if driver1 == driver2:
+        print('Please select two different drivers')
+        return
     #data loading
     session = loadSession(year, gp, sessionType)
     if not session:
