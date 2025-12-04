@@ -27,7 +27,7 @@ def plotAnalysis(session, driver1Tel, driver1Code, driver2Tel, driver2Code, delt
     fig, ax = plt.subplots(2, 1, figsize=(12, 8), gridspec_kw={'height_ratios': [3, 1]}, sharex=True)
 
     #PLOT 1 : Speed trace
-    ax[0].set_title(f"{eventName}: Speed Comparision", fontsize=16, color='white')
+    ax[0].set_title(f"{eventName}: Speed Comparison", fontsize=16, color='white')
     #let's plot each driver
     #driver 1
     color1 = fastf1.plotting.get_driver_color(driver1Code, session=session)
