@@ -18,7 +18,7 @@ def computeDeltaTime(driver1Tel, driver2Tel):
     sectionDist = np.linspace(0, maxDist, num=int(maxDist))
 
     #in order for this to work correctly, we need to convert Time to seconds
-    #also we need stricly increasing time
+    #also we need strictly increasing time
     d1TimeSeconds = driver1Tel['Time'].dt.total_seconds()
     d2TimeSeconds = driver2Tel['Time'].dt.total_seconds()
 
