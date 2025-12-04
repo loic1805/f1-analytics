@@ -33,7 +33,7 @@ def plotAnalysis(session, driver1Tel, driver1Code, driver2Tel, driver2Code, delt
     color1 = fastf1.plotting.get_driver_color(driver1Code, session=session)
     ax[0].plot(driver1Tel["Distance"], driver1Tel["Speed"], color=color1, label=driver1Code,linewidth=2)
 
-    #driver 2 we'll use dashed line for contrast
+    #driver 2, we'll use dashed line for contrast
     color2 = fastf1.plotting.get_driver_color(driver2Code, session=session)
     ax[0].plot(driver2Tel["Distance"], driver2Tel["Speed"], color=color2, linestyle="--", label=driver2Code,linewidth=2)
 
