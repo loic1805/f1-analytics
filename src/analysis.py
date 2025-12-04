@@ -23,7 +23,7 @@ def computeDeltaTime(driver1Tel, driver2Tel):
     d2TimeSeconds = driver2Tel['Time'].dt.total_seconds()
 
     #now we interpolate time
-    #basically 'at distance x, what was the time for driver 1??'
+    #basically 'at distance x, what was the time for driver 1?'
     d1Interp = np.interp(sectionDist, driver1Tel['Distance'], d1TimeSeconds)
     d2Interp = np.interp(sectionDist, driver2Tel['Distance'], d2TimeSeconds)
 
