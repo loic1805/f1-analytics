@@ -1,7 +1,7 @@
 # F1 Telemetry Analytics 🏎️
 
 ## What is this?
-Welcome to my digital pit wall. I'm building this tool to better understand the marginal gains in Formula 1. As an aspiring Data Engineer/Analyst, I wanted to move beyond the streaming and try to look at the raw telemetry myself.
+As an aspiring Data Engineer/Analyst and a F1 enthusiast, I wanted to move beyond the streaming and try to look at the raw telemetry myself. Therefore I built this tool to better understand the marginal gains in Formula 1.
 
 The purpose of this little project is quite simple: **Take two drivers, overlay their data and figure out exactly where the lap time was won or lost.**
 
