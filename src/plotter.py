@@ -45,7 +45,7 @@ def plotAnalysis(session, driver1Tel, driver1Code, driver2Tel, driver2Code, delt
     #and finally the grid and the labels
     ax[1].set_ylabel(f"Gap (s)\n({driver1Code} Ahead)", fontsize=10)
     ax[1].set_xlabel("Distance (m)", fontsize=12)
-    ax[1].grid(color="gray", linetyle=":", linewidth=0.5, alpha=0.5)
+    ax[1].grid(color="gray", linestyle=":", linewidth=0.5, alpha=0.5)
 
     plt.tight_layout()
 
