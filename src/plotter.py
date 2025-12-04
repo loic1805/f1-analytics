@@ -44,7 +44,7 @@ def plotAnalysis(session, driver1Tel, driver1Code, driver2Tel, driver2Code, delt
 
     #PLOT 2 : Time comparison
     ax[1].plot(deltaData['Distance'], deltaData['Delta'], color='white', linewidth=1)
-    #we'll add an horizontal line at 0 exactly
+    #we'll add a horizontal line at 0 exactly
     ax[1].axhline(0, color='gray', linestyle='--', linewidth=1)
 
     #and finally the grid and the labels
