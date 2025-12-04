@@ -35,7 +35,7 @@ def plotAnalysis(session, driver1Tel, driver1Code, driver2Tel, driver2Code, delt
 
     #driver 2, we'll use dashed line for contrast
     color2 = fastf1.plotting.get_driver_color(driver2Code, session=session)
-    ax[0].plot(driver2Tel["Distance"], driver2Tel["Speed"], color=color2, linestyle="--", label=driver2Code,linewidth=2)
+    ax[0].plot(driver2Tel["Distance"], driver2Tel["Speed"], color=color2, linestyle="--", label=driver2Code, linewidth=2)
 
     #now the grid and the labels
     ax[0].set_ylabel("Speed (km/h)", fontsize=12)
