@@ -1,57 +1,83 @@
-import matplotlib.pyplot as plt
-import fastf1.plotting
+import plotly.graph_objects as go
+from plotly.subplots import make_subplots
 
-#dark mode
-plt.style.use('dark_background')
-
-#let's apply the basic f1 styling
-fastf1.plotting.setup_mpl()
-
-def plotAnalysis(session, driver1Tel, driver1Code, driver2Tel, driver2Code, deltaData):
+def plotAnalysis(session, driversData, deltas, refDriver):
     """
-    Plots a dual analysis for two drivers: (1) a comparison of their speed traces, and (2) a delta time (gap) analysis.
-    
-    The first subplot compares the speed traces of both drivers over distance.
-    The second subplot shows the delta time (gap) between the two drivers as a function of distance.
-    
-    :param session (object): the fastF1 session object
-    :param driver1Tel (dataframe): driver 1's telemetry data
-    :param driver1Code (str): driver 1's code (e.g 'VER')
-    :param driver2Tel (dataframe): driver 2's telemetry data
-    :param driver2Code (str): driver 2's code (e.g 'LEC')
-    :param deltaData (dataframe): calculated time gap with 'Distance' and 'Delta' columns
+    Plots an interactive 5-panel dashboard with Corner Annotations.
     """
     eventName = f"{session.event.EventName} {session.event.year}"
-    print(f"Generating chart: {driver1Code} vs {driver2Code}..")
-    #first we create the main figure (two subplots : 2 rows 1 column, sharing the x axis)
-    fig, ax = plt.subplots(2, 1, figsize=(12, 8), gridspec_kw={'height_ratios': [3, 1]}, sharex=True)
+    #the circuits info
+    circuit_info = session.get_circuit_info()
+    fig = make_subplots(
+        rows=5, cols=1, 
+        shared_xaxes=True, 
+        vertical_spacing=0.02,
+        row_heights=[0.15, 0.40, 0.15, 0.15, 0.15],
+        subplot_titles=("Gap to Reference", "Speed", "Throttle", "Brake", "Gear")
+    )
+    #now adding the driver's trace
+    for driver, data in driversData.items():
+        tel = data['tel']
+        color = data['color']
+        width = 3 if driver == refDriver else 1.5
+        #1st row - the delta
+        if driver in deltas:
+            fig.add_trace(go.Scatter(x=deltas[driver]['Distance'], y=deltas[driver]['Delta'], 
+                                   mode='lines', name=f"Gap ({driver})", line=dict(color=color, width=1.5),
+                                   legendgroup=driver, showlegend=False,
+                                   hovertemplate=f"{driver} Gap: %{{y:.3f}}s<extra></extra>"), row=1, col=1)
 
-    #PLOT 1 : Speed trace
-    ax[0].set_title(f"{eventName}: Speed Comparison", fontsize=16, color='white')
-    #let's plot each driver
-    #driver 1
-    color1 = fastf1.plotting.get_driver_color(driver1Code, session=session)
-    ax[0].plot(driver1Tel["Distance"], driver1Tel["Speed"], color=color1, label=driver1Code,linewidth=2)
+        #row 2 - speed
+        fig.add_trace(go.Scatter(x=tel['Distance'], y=tel['Speed'], 
+                               mode='lines', name=driver, line=dict(color=color, width=width),
+                               legendgroup=driver,
+                               hovertemplate=f"{driver} Speed: %{{y:.1f}} km/h<extra></extra>"), row=2, col=1)
 
-    #driver 2, we'll use dashed line for contrast
-    color2 = fastf1.plotting.get_driver_color(driver2Code, session=session)
-    ax[0].plot(driver2Tel["Distance"], driver2Tel["Speed"], color=color2, linestyle="--", label=driver2Code, linewidth=2)
+        #row 3 - the throttles
+        fig.add_trace(go.Scatter(x=tel['Distance'], y=tel['Throttle'], 
+                               mode='lines', name=f"Throttle ({driver})", line=dict(color=color, width=1.5),
+                               legendgroup=driver, showlegend=False,
+                               hovertemplate=f"{driver} Throttle: %{{y:.0f}}%<extra></extra>"), row=3, col=1)
 
-    #now the grid and the labels
-    ax[0].set_ylabel("Speed (km/h)", fontsize=12)
-    ax[0].legend(fontsize=12)
-    ax[0].grid(color="gray", linestyle=":", linewidth=0.5, alpha=0.5)
+        #row 4 - brake
+        fig.add_trace(go.Scatter(x=tel['Distance'], y=tel['Brake'], 
+                               mode='lines', name=f"Brake ({driver})", line=dict(color=color, width=1.5),
+                               legendgroup=driver, showlegend=False,
+                               hovertemplate=f"{driver} Brake: %{{y:.0f}}<extra></extra>"), row=4, col=1)
 
-    #PLOT 2 : Time comparison
-    ax[1].plot(deltaData['Distance'], deltaData['Delta'], color='white', linewidth=1)
-    #we'll add a horizontal line at 0 exactly
-    ax[1].axhline(0, color='gray', linestyle='--', linewidth=1)
-
-    #and finally the grid and the labels
-    ax[1].set_ylabel(f"Gap (s)\n({driver1Code} Ahead)", fontsize=10)
-    ax[1].set_xlabel("Distance (m)", fontsize=12)
-    ax[1].grid(color="gray", linestyle=":", linewidth=0.5, alpha=0.5)
-
-    plt.tight_layout()
+        #tow 5 - Gear
+        fig.add_trace(go.Scatter(x=tel['Distance'], y=tel['nGear'], 
+                               mode='lines', name=f"Gear ({driver})", line=dict(color=color, width=1.5),
+                               legendgroup=driver, showlegend=False,
+                               hovertemplate=f"{driver} Gear: %{{y:.0f}}<extra></extra>"), row=5, col=1)
+    #corner animations
+    if circuit_info is not None:
+        for index, row in circuit_info.corners.iterrows():
+            #a vertical line for the corner
+            fig.add_vline(x=row['Distance'], line_width=1, line_dash="dash", line_color="gray", opacity=0.5)
+            #we'll place the corner number label at the top of the Speed chart (Row 2)
+            fig.add_annotation(
+                x=row['Distance'], y=350,
+                text=f"{row['Number']}{row['Letter']}",
+                showarrow=False,
+                row=2, col=1,
+                font=dict(size=10, color="gray"),
+                yshift=10
+            )
+    fig.update_layout(
+        template="plotly_dark",
+        height=1000,
+        title=dict(text=f"{eventName}: Telemetry Deep Dive", font=dict(size=20)),
+        hovermode="x unified",
+        legend=dict(traceorder="normal", orientation="h", y=1.02, x=0.5, xanchor="center")
+    )
+    
+    # onto the labels
+    fig.update_yaxes(title_text="Gap (s)", row=1, col=1)
+    fig.update_yaxes(title_text="Speed (km/h)", row=2, col=1)
+    fig.update_yaxes(title_text="Throttle (%)", row=3, col=1, range=[-5, 105])
+    fig.update_yaxes(title_text="Brake", row=4, col=1, tickvals=[0, 1])
+    fig.update_yaxes(title_text="Gear", row=5, col=1)
+    fig.update_xaxes(title_text="Distance (m)", row=5, col=1)
 
     return fig
