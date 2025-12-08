@@ -1,11 +1,11 @@
 import fastf1
 import fastf1.plotting
-from fastf1.core import Laps
-import pandas as pd
+import os 
 
-#setting up cache so we don't spam the F1 servers..
-fastf1.Cache.enable_cache('cache')
-#we'll use fastf1 plotting style to add nice fonts and colors
+cache_dir = 'cache'
+if not os.path.exists(cache_dir):
+    os.makedirs(cache_dir)
+fastf1.Cache.enable_cache(cache_dir)
 fastf1.plotting.setup_mpl()
 
 def loadSession(year, grandPrix, sessionType = 'Q'):
@@ -44,6 +44,19 @@ def getFastestLap(session, driverCode):
     except Exception as e:
         print(f"Error extracting lap for {driverCode}: {e}")
         return None, None
+    
+def loadSessionLight(year, grandPrix, sessionType):
+    """
+    Loads a session without telemetry/laps data to quickly get the driver list.
+    """
+    print(f"⬇Loading Driver List: {year} {grandPrix} ({sessionType})...")
+    try:
+        session = fastf1.get_session(year, grandPrix, sessionType)
+        session.load(telemetry=False, laps=False, weather=False)
+        return session
+    except Exception as e:
+        print(f"Failed to load session header: {e}")
+        return None
     
 if __name__ == "__main__":
     session = loadSession(2024, 'Bahrain')
