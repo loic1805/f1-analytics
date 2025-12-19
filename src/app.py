@@ -118,7 +118,7 @@ if run_btn and selected_drivers:
         if driver in drivers_data:
             lap_time = (
                 str(drivers_data[driver]["lapTime"]).split("days")[-1].strip()[:-3]
-            )  # to runcate the microseconds
+            )  # to truncate the microseconds
             # the color choice
             if driver == ref_driver:
                 cols[i].metric(
