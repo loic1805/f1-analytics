@@ -61,7 +61,7 @@ def plotAnalysis(session, driversData, deltas, refDriver):
                 text=f"{row['Number']}{row['Letter']}",
                 showarrow=False,
                 row=2, col=1,
-                font=dict(size=10, color="grey"),
+                font=dict(size=10, color="gray"),
                 yshift=10
             )
     fig.update_layout(
