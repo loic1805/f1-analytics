@@ -10,21 +10,21 @@ def interactiveInput():
     """
     Guides the user through selecting Year, GP, Session, and Drivers.
     """
-    print("\n🏎️  F1 TELEMETRY ANALYSIS WIZARD 🏎️")
+    print("\n F1 TELEMETRY ANALYSIS WIZARD")
     print("-----------------------------------")
     
     # 1. Select Year
     while True:
         try:
-            year = int(input("1️⃣  Enter Season Year (e.g. 2021): "))
+            year = int(input("1 Enter Season Year (e.g. 2021): "))
             if 2018 <= year <= 2025: # FastF1 supports from 2018 well
                 break
-            print("⚠️  Please enter a year between 2018 and current.")
+            print("  Please enter a year between 2018 and current.")
         except ValueError:
-            print("⚠️  Invalid number.")
+            print(" Invalid number.")
 
     # 2. Select Grand Prix (Fetch Schedule)
-    print(f"\n📅 Fetching {year} Schedule...")
+    print(f"\n Fetching {year} Schedule...")
     schedule = fastf1.get_event_schedule(year, include_testing=False)
     
     # Filter out future races (optional, but keeps list clean)
@@ -35,29 +35,29 @@ def interactiveInput():
     
     while True:
         try:
-            roundNum = int(input("\n2️⃣  Select Race Round (Number): "))
+            roundNum = int(input("\n  Select Race Round (Number): "))
             # Get the specific event row
             event = schedule[schedule['RoundNumber'] == roundNum]
             if not event.empty:
                 gpName = event.iloc[0]['EventName']
                 break
-            print("⚠️  Invalid round number.")
+            print("  Invalid round number.")
         except ValueError:
-            print("⚠️  Invalid input.")
+            print("  Invalid input.")
 
     # 3. Select Session
-    print(f"\n📍 Selected: {gpName}")
+    print(f"\n Selected: {gpName}")
     print("   [Q] Qualifying (Recommended)")
     print("   [R] Race")
     print("   [FP1/FP2/FP3] Practice")
     print("   [S] Sprint")
     
-    sessionType = input("\n3️⃣  Select Session Code [Default: Q]: ").upper()
+    sessionType = input("\n  Select Session Code [Default: Q]: ").upper()
     if not sessionType:
         sessionType = 'Q'
 
     # 4. Select Drivers (Fetch Entry List)
-    print(f"\n👥 Loading Driver List for {gpName}...")
+    print(f"\n Loading Driver List for {gpName}...")
     
     # We do a 'light' load just to get the drivers (no telemetry yet)
     try:
@@ -75,12 +75,12 @@ def interactiveInput():
             print(f"   {info['Abbreviation']:<5} |  {info['FullName']:<19} | {info['TeamName']}")
             
     except Exception as e:
-        print(f"⚠️  Could not load driver list: {e}")
+        print(f"Could not load driver list: {e}")
         print("   (You'll have to type the codes manually)")
 
     print("\nWho are we comparing?")
-    d1 = input("4️⃣  Driver 1 Code (e.g. VER): ").upper()
-    d2 = input("5️⃣  Driver 2 Code (e.g. LEC): ").upper()
+    d1 = input("4Driver 1 Code (e.g. VER): ").upper()
+    d2 = input("5Driver 2 Code (e.g. LEC): ").upper()
     
     return year, gpName, sessionType, d1, d2
 
@@ -105,7 +105,7 @@ def main():
         # Fast Mode logic
         args = parse_args()
         if not all([args.year, args.race, args.driver1, args.driver2]):
-             print("❌ Error: In Fast Mode, you must provide --year, --race, --driver1, and --driver2")
+             print("Error: In Fast Mode, you must provide --year, --race, --driver1, and --driver2")
              print("   Or run without arguments to use the Wizard.")
              return
         year = args.year
@@ -118,13 +118,13 @@ def main():
     print(f"⚔️  Duel: {driver1} vs {driver2}")
 
     if driver1 == driver2:
-        print("❌ Error: Please select two different drivers.")
+        print("Error: Please select two different drivers.")
         return
 
     # Load Data (Full Load)
     session = loadSession(year, gp, sessionType)
     if not session:
-        print("❌ Session load failed.")
+        print("Session load failed.")
         return
 
     # Get Laps
@@ -132,7 +132,7 @@ def main():
     d2Lap, d2Tel = getFastestLap(session, driver2)
     
     if d1Tel is None or d2Tel is None:
-        print("❌ Could not extract telemetry for one or both drivers.")
+        print("Could not extract telemetry for one or both drivers.")
         return
     
     # Compute Delta
@@ -141,7 +141,7 @@ def main():
     # Plot
     plotAnalysis(session, d1Tel, driver1, d2Tel, driver2, deltaData)
     
-    print("\n📊 Dashboard generated successfully!")
+    print("\nDashboard generated successfully!")
     plt.show()
 
 if __name__ == "__main__":
