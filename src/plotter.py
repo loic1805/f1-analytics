@@ -76,7 +76,7 @@ def plotAnalysis(session, driversData, deltas, refDriver):
     fig.update_yaxes(title_text="Gap (s)", row=1, col=1)
     fig.update_yaxes(title_text="Speed (km/h)", row=2, col=1)
     fig.update_yaxes(title_text="Throttle (%)", row=3, col=1, range=[-5, 105])
-    fig.update_yaxes(title_text="Brake", row=4, col=1, tickvals=[0, 1])
+    fig.update_yaxes(title_text="Brake level", row=4, col=1, tickvals=[0, 1])
     fig.update_yaxes(title_text="Gear", row=5, col=1)
     fig.update_xaxes(title_text="Distance (m)", row=5, col=1)
 
