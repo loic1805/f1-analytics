@@ -93,7 +93,7 @@ if run_btn and selected_drivers:
                 }
             else:
                 st.warning(f"No telemetry found for {driver}")
-        # then we compute the delts
+        # then we compute the deltas
         if ref_driver in drivers_data:
             ref_tel = drivers_data[ref_driver]["tel"]
             for driver in selected_drivers:
