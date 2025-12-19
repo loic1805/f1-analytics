@@ -99,7 +99,7 @@ if run_btn and selected_drivers:
             for driver in selected_drivers:
                 if driver != ref_driver and driver in drivers_data:
                     # calc delta, in a ref vs driver way (we want the gap to ref)
-                    # if computeDeltaTime(ref, driver) result is positivz, it means that ref is ahead
+                    # if computeDeltaTime(ref, driver) result is positive, it means that ref is ahead
                     delta_df = computeDeltaTime(ref_tel, drivers_data[driver]["tel"])
                     deltas[driver] = delta_df
         status.update(label="Analysis Complete!", state="complete")
