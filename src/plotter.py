@@ -7,7 +7,10 @@ def plotAnalysis(session, driversData, deltas, refDriver):
     """
     eventName = f"{session.event.EventName} {session.event.year}"
     #the circuits info
-    circuit_info = session.get_circuit_info()
+    try:
+        circuit_info = session.get_circuit_info()
+    except Exception:
+        circuit_info = None
     fig = make_subplots(
         rows=5, cols=1, 
         shared_xaxes=True, 
