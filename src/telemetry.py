@@ -39,10 +39,24 @@ def getFastestLap(session, driverCode):
             return None, None
         #if all good, we get his fastest lap and the related telemetry data
         fastestLap = laps.pick_fastest()
+        #safeguard: pick_fastest can return a lap with NaT time (no valid lap)
+        import pandas as pd
+        if pd.isna(fastestLap['LapTime']):
+            print(f"No valid lap time found for {driverCode}, trying quicklap")
+            #fallback: try picking a quick lap instead
+            quickLaps = laps.pick_quicklaps(threshold=1.1)
+            if len(quickLaps) > 0:
+                fastestLap = quickLaps.pick_fastest()
+            else:
+                print(f"No quick laps either for {driverCode}")
+                return None, None
         telemetryData = fastestLap.get_telemetry()
+        if telemetryData is None or len(telemetryData) == 0:
+            print(f"Telemetry data is empty for {driverCode}")
+            return None, None
         return fastestLap, telemetryData
     except Exception as e:
-        print(f"Error extracting lap for {driverCode}: {e}")
+        print(f"Error extracting lap for {driverCode}: {type(e).__name__}: {e}")
         return None, None
     
 def loadSessionLight(year, grandPrix, sessionType):
