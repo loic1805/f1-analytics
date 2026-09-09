@@ -83,7 +83,7 @@ if run_btn and selected_drivers:
             status.write(f"Processing {driver}...")
             # get lap data
             lap, tel = getFastestLap(session, driver)
-            if tel is not None:
+            if lap is not None and tel is not None and len(tel) > 0:
                 # store data
                 team_color = fastf1.plotting.get_driver_color(driver, session=session)
                 drivers_data[driver] = {
